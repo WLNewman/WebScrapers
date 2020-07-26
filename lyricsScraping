@@ -1,0 +1,30 @@
+from bs4 import BeautifulSoup
+import requests
+
+author = input("What was the band?")
+title = input("What was the song?")
+
+"""sublimeText doesn't let input work, if yours doesn't here's a workaround
+author = "the beatles"
+title = "paperback writer"
+"""
+
+authorTitle = (author + " " + title).title()
+print(authorTitle)
+name = (authorTitle.replace(" ", "-")).lower()
+urlName = name.capitalize()
+
+link = f'https://genius.com/{urlName}-lyrics'
+
+
+html = requests.get(link).text
+
+soup = BeautifulSoup(html, 'html.parser')
+
+body = soup.find('body')
+
+try:
+   lyrics = body.find('div', class_= 'lyrics')
+   print(lyrics.text)
+except:
+   print("invalid song")
