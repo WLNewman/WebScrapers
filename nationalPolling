@@ -1,0 +1,21 @@
+from bs4 import BeautifulSoup
+import requests
+
+candidates = ["Biden", "Trump"]
+
+
+def nationalPoll():
+	html = requests.get('https://www.realclearpolitics.com/epolls/2020/president/us/general_election_trump_vs_biden-6247.html').text
+
+	site = BeautifulSoup(html, 'html.parser')
+
+	body = site.find('body')
+
+	data = body.find_all('div', class_='value')
+
+	loopCon = 0
+
+	for point in data:
+		print(f"{candidates[loopCon]} is sitting at {point.text.strip()} nationally according to RCP")
+		loopCon += 1
+nationalPoll()
